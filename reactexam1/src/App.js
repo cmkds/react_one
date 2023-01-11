@@ -1,25 +1,28 @@
-import './App.css';
+import React from 'react'
+// import './App.css';
+import Counter from "./Counter"
+
+import MyHeader  from './MyHeader';
 
 function App() {
+  const number =5;
 
-  let name ="이정환"
-  //함수 안에 지역변수를 만든 후
+  const counterProps = {
+    a: 1,
+    b: 2,
+    c: 3,
+    d: 4,
+    e: 5,
+    // initialValue: 5,
+  }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-      <h2>안녕 리액트 {name} </h2>
-      {/* 중괄호를 써서 값을 집어넣으면 사용 할 수 있다.
-      이렇게 js, html 을 합쳐서 사용 할 수 있는 문법을 jsx 라고 한다. */}
-
-      </header>
+  return(
+    <div>
+      <MyHeader/>
+      <Counter {...counterProps} />
     </div>
   );
 }
 
 
 export default App;
-//새로운 ex 모듈 시스템을 사용하여 내보내는 기능
-// 다른 파일에서 import해서 사용 할 수 있다.
-
-//export default는 한개만 사용 할 수 있다.
