@@ -1,38 +1,31 @@
-.App {
-  text-align: center;
+/* 컴포넌트 바로 css 적용하기 */
+/* 최상단 App.css에서 컴포넌트이름을 .과 함께 적은후에 거기에 스타일링을 해도 된다. */
+/* 컴포넌트 최상단 div의 ClassName을 컴포넌트의 이름과 똑같이 적었기 때문 */
+
+.DiaryEditor2 {
+  border: 1px solid gray;
+  text-align : center;
+  padding : 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.DiaryEditor2 input, textarea {
+  margin-bottom: 20px;
+  width: 500px;
+  padding : 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.DiaryEditor2 textarea {
+  height: 150px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.DiaryEditor2 select {
+  width: 300px;
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.DiaryEditor2 button{
+  width: 500px;
+  padding: 10px;
+  cursor: pointer;
 }
