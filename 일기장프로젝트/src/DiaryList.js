@@ -1,5 +1,6 @@
-const DiaryList = ({ diaryList }) => {
-  console.log(diaryList);
+import DiaryItem from "./DiaryItem";
+
+const DiaryList = ({ diaryList, onRemove, onEdit }) => {
   return (
     <div className="DiaryList">
       <h2>일기 리스트</h2>
@@ -8,17 +9,18 @@ const DiaryList = ({ diaryList }) => {
 
       <div>
         {diaryList.map((it) => (
-          // 얘는 {}이아닌 ()로 감쌈.
-          <div>
-            <div>작성자 : {it.author}</div>
-            <div>일기 : {it.content}</div>
-            <div>감정 : {it.emotion}</div>
-            <div>작성 시간(ms) : {it.created_date}</div>
-          </div>
+          <DiaryItem key={it.id} {...it} onRemove={onRemove} onEdit={onEdit} />
+          // 다이어리 아이템은 데이터를 모두 받아서 렌더링 해야 한다.
+          // 리스트의 아이템 이기 때문에 key를 전달해줘야 한다.
+          // 모든 데이터는 스프레드 연산자를 통해서 전달해준다.
         ))}
       </div>
     </div>
   );
+};
+
+DiaryList.defaultProps = {
+  diaryList: [],
 };
 
 export default DiaryList;
