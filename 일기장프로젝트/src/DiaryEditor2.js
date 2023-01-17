@@ -1,8 +1,10 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
+const DiaryEditor2 = ({ onCreate }) => {
+  useEffect(() => {
+    console.log("DiaryEditor 렌더");
+  });
 
-const DiaryEditor2 = ({onCreate}) => {
-//props으로 전달 받은 onCreate 작성
   const authorInput = useRef();
   const contentInput = useRef();
 
@@ -13,19 +15,19 @@ const DiaryEditor2 = ({onCreate}) => {
   });
 
   const handleChangeState = (e) => {
-    console.log(e.target.name); 
-    console.log(e.target.value); 
+    console.log(e.target.name);
+    console.log(e.target.value);
     setState({
       ...state,
-      [e.target.name]: e.target.value, 
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = () => {
     if (!state.author.length) {
-      authorInput.current.focus(); 
+      authorInput.current.focus();
 
-      return; 
+      return;
     }
     if (state.content.length < 5) {
       contentInput.current.focus();
@@ -41,8 +43,7 @@ const DiaryEditor2 = ({onCreate}) => {
       author: "",
       content: "",
       emotion: 1,
-    })
-
+    });
   };
 
   return (
@@ -93,4 +94,4 @@ const DiaryEditor2 = ({onCreate}) => {
   );
 };
 
-export default DiaryEditor2;
+export default React.memo(DiaryEditor2);

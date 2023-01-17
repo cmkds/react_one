@@ -1,49 +1,11 @@
-import { useCallback, useEffect, useRef, useMemo, useReducer } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import "./App.css";
 import DiaryEditor2 from "./DiaryEditor2";
 import DiaryList from "./DiaryList";
 
-// reducer 함수는 별도의 함수가 있는게 아니라 우리가 만들어 줘야한다.
-// useState대신 useReducer을 사용하는 이유는
-// 복잡한 상태변화 로직을 컴포넌트 밖으로 분리하기 위함.
-// 그래서 컴포넌트 밖에 reducer 함수를 만들어 준다.
-
-const reducer = (state, action) => {
-  //파라미터는 2개 (상태변화직전의 state, 어떤 상태변화를 일으켜야 하는지 정보가 담겨있는 action 객체)
-  switch (action.type) {
-    case "INIT": {
-      return action.data;
-      //왜 action.data냐
-      //getData 함수에서 dispatch를 일으켰을 때 type을  INIT으로 전달하면서
-      //어떤 데이터로 초기화 할것이냐를 지칭하는 data 프로퍼티에 initData를
-      //넣어 놨기 때문에
-    }
-    case "CREATE": {
-      const created_date = new Date().getTime();
-      const newItem = {
-        ...action.data,
-        created_date,
-      };
-      return [newItem, ...state];
-    }
-    case "REMOVE": {
-      return state.filter((it) => it.id !== action.targetId);
-    }
-    case "EDIT": {
-      return state.map((it) =>
-        it.id === action.targetId ? { ...it, content: action.newContent } : it
-      );
-    }
-    default:
-      return state;
-    //default 일때는 아무것도 동작 안하도록 state를 다시 준다.
-  }
-};
-
-const App = () => {
-  // const [data, setData] = useState([]);
-
-  const [data, dispatch] = useReducer(reducer, []);
+function App() {
+  const [data, setData] = useState([]);
+  //일기 데이터를 넣을 것이기 때문에 useState는 배열로 초기값 설정.
 
   const dataId = useRef(0);
   //@@@ API 호출하기
@@ -68,10 +30,7 @@ const App = () => {
       };
     });
 
-    // setData(initData);
-    dispatch({ type: "INIT", data: initData });
-    //reducer는 액션 객체를 받는데 액션의 타입은 INIT 이고 액션에 필요한 data는
-    // initData 이다.
+    setData(initData);
   };
 
   // API 를 호출하는 getData 함수를 마운트 되자마자 호출하기
@@ -80,21 +39,38 @@ const App = () => {
   }, []);
 
   const onCreate = useCallback((author, content, emotion) => {
-    dispatch({
-      type: "CREATE",
-      data: { author, content, emotion, id: dataId.current },
-    });
-    //data는 newItem을 그대로 전달하면 된다.
+    //객체에 담을 값들은 파라미터로 받아 온다.
+    const created_date = new Date().getTime();
+    // new Date().getTime() 현재시간 받아오기.
+    // 현재시간도 여기서 만들어서 객체에 담아 준다.
 
+    const newItem = {
+      author,
+      content,
+      emotion,
+      created_date,
+      id: dataId.current,
+    };
     dataId.current += 1;
+
+    //함수형 업데이트 활용
+    // setData([newItem, ...data]);
+    setData((data) => [newItem, ...data]);
   }, []);
 
   const onRemove = useCallback((targetId) => {
-    dispatch({ type: "REMOVE", targetId });
+    //항상 최신 data를 사용하기 위해서
+    // data를 다루는 부분을 전달해서 리턴하는 식으로 작성해야 한다.
+    // setData의 인자부분의 데이터를 사용해야 한다.
+    setData((data) => data.filter((it) => it.id !== targetId));
   }, []);
 
   const onEdit = useCallback((targetId, newContent) => {
-    dispatch({ type: "EDIT", targetId, newContent });
+    setData((data) =>
+      data.map((it) =>
+        it.id === targetId ? { ...it, content: newContent } : it
+      )
+    );
   }, []);
 
   // 글을 수정 할 때는 감정의 변화가 없기 때문에
@@ -130,6 +106,6 @@ const App = () => {
       <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
   );
-};
+}
 
 export default App;

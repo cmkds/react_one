@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 const DiaryItem = ({
   onEdit,
   onRemove,
@@ -8,6 +8,10 @@ const DiaryItem = ({
   created_date,
   id,
 }) => {
+  useEffect(() => {
+    console.log(`${id}번 째 아이템 렌더!`);
+  });
+
   //수정하기를 하기 위해서
   //DiaryItem에 State를 만들어 준다.
   //기본 값으로는 false를 넣어준다.
@@ -92,4 +96,4 @@ const DiaryItem = ({
   );
 };
 
-export default DiaryItem;
+export default React.memo(DiaryItem);
