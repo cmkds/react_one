@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useMemo, useReducer } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useMemo,
+  useReducer,
+} from "react";
 import "./App.css";
 import DiaryEditor2 from "./DiaryEditor2";
 import DiaryList from "./DiaryList";
@@ -40,9 +46,15 @@ const reducer = (state, action) => {
   }
 };
 
-const App = () => {
-  // const [data, setData] = useState([]);
+//context 만듦.
+//context도 export해줘야 다른 컴포넌트들이 context에 접근해서 사용할 수 있다.
+//export하는 이유?
+// export default는 파일하나당 하나밖에 쓸 수 없다.
+export const DiaryStateContext = React.createContext();
 
+export const DiaryDispatchContext = React.createContext();
+
+const App = () => {
   const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(0);
@@ -97,6 +109,12 @@ const App = () => {
     dispatch({ type: "EDIT", targetId, newContent });
   }, []);
 
+  //useMemo 활용해서 함수 묶어주기
+  //절대 재생성될 일이 없도록 2번째 인자에 []을 넣어준다.
+  const memoizedDispatches = useMemo(() => {
+    return { onCreate, onRemove, onEdit };
+  }, []);
+
   // 글을 수정 할 때는 감정의 변화가 없기 때문에
   // 변경될 값이 없는 데 리액트의 기능으로 인해 리렌더링 될 때마다
   // getDiaryAnalysis가 실행된다. 이는 비효율 적이다.
@@ -121,14 +139,23 @@ const App = () => {
   const { goodCount, badCount, goodRatio } = getDiaryAnalysis;
 
   return (
-    <div className="App">
-      <DiaryEditor2 onCreate={onCreate} />
-      <div>전체일기 : {data.length}</div>
-      <div>기분 좋은 일기 개수 : {goodCount}</div>
-      <div>기분 나쁜 일기 개수 : {badCount}</div>
-      <div>기분 좋은 일기 비율 : {goodRatio}</div>
-      <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
-    </div>
+    // Context적용하기
+    // 리턴부분의 최상위 태그를 바꿔준다.
+    // 만든 Context명.Provider로
+
+    //데이터 내려주기. value라는 프롭으로 데이터를 내려줘야한다.
+    <DiaryStateContext.Provider value={data}>
+      <DiaryDispatchContext.Provider value={memoizedDispatches}>
+        <div className="App">
+          <DiaryEditor2 />
+          <div>전체일기 : {data.length}</div>
+          <div>기분 좋은 일기 개수 : {goodCount}</div>
+          <div>기분 나쁜 일기 개수 : {badCount}</div>
+          <div>기분 좋은 일기 비율 : {goodRatio}</div>
+          <DiaryList />
+        </div>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 };
 

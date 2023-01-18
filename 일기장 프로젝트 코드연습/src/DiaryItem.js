@@ -1,44 +1,44 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { DiaryDispatchContext } from "./App";
+
 const DiaryItem = ({ author, content, emotion, created_date, id }) => {
-  const { onRemove, onEdit } = useContext(DiaryDispatchContext);
+  //context
+  // const { onRemove, onEdit} = useContext(DiaryDispatchContext);
 
-  //수정하기를 하기 위해서
-  //DiaryItem에 State를 만들어 준다.
-  //기본 값으로는 false를 넣어준다.
-  //현재 수정 중인지 아닌지를 확인하기 위함.
-  //수정 중이면 수정화면이 뜨도록하고 수정 중이 아니면 정상 화면이 뜨도록 한다.
+  //useState
+  //수정 여부 확인 state
   const [isEdit, setIsEdit] = useState(false);
-
-  //toggleIsEdit은 호출되면 setIsEdit을 실행시켜 isEdit의 값을 반전시키는 코드로 작성
-  const toggleIsEdit = () => setIsEdit(!isEdit);
-
-  //수정 시에 새로 작성한 값을 담을 State
+  //수정 값 저장 state
   const [localContent, setLocalContent] = useState(content);
-  // 수정 시에 원래 값을 담아 주시 위해서 userState의 초기값을 content로 설정
 
+  //useRef
   const localContentInput = useRef();
 
+  ///////
+  //function
+  //수정Edit 반전
+  const toggleIsEdit = () => setIsEdit(!isEdit);
+  //일기 삭제 확인
   const handleRemove = () => {
     if (window.confirm(`${id}번째 일기를 정말 삭제하시겠습니까?`)) {
       onRemove(id);
     }
   };
 
-  //수정 취소 눌렀을 때 함수
+  //수정 취소
   const handleQuitEdit = () => {
-    setIsEdit(false); //setIsEdit을 false로 바꿔준다.
-    setLocalContent(content); //localContent를 기존의 content로 바꿔준다.
+    setIsEdit(false);
+    setLocalContent(content);
   };
 
-  // 수정 완료 버튼 눌렀을 때
+  //수정 완료
   const handleEdit = () => {
     if (localContent.length < 5) {
       localContentInput.current.focus();
       return;
     }
-    if (window.confirm(`${id}번 째 일기를 수정하시겠습니까? `)) {
-      onEdit(id, localContent);
+    if (window.confirm(`${id}번 째 일기를 수정하시겠습니까?`)) {
+      // onEdit(id, localContent)
       toggleIsEdit();
     }
   };
@@ -53,18 +53,16 @@ const DiaryItem = ({ author, content, emotion, created_date, id }) => {
         <span className="date">{new Date(created_date).toLocaleString()}</span>
       </div>
       <div className="content">
-        {/* 수정중일 때 content가 달라지도록 코드 변경 */}
+        {content}
         {isEdit ? (
-          // 수정 중 일 때
           <>
             <textarea
-              ref={localContentInput} //ref로 가르키기 위함
+              ref={localContentInput}
               value={localContent}
               onChange={(e) => setLocalContent(e.target.value)}
             />
           </>
         ) : (
-          //수정 중이 아닐 때
           <>{content}</>
         )}
       </div>
@@ -76,15 +74,12 @@ const DiaryItem = ({ author, content, emotion, created_date, id }) => {
         </>
       ) : (
         <>
-          {" "}
           <button onClick={handleRemove}>삭제하기</button>
           <button onClick={toggleIsEdit}>수정하기</button>
         </>
       )}
-
-      {/* 수정하기 버튼을 누르면 toggleIsEdit 함수 실행 하도록 함 */}
     </div>
   );
 };
 
-export default React.memo(DiaryItem);
+export default DiaryItem;

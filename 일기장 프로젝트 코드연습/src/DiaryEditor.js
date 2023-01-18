@@ -1,18 +1,25 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { DiaryDispatchContext } from "./App";
 
-const DiaryEditor2 = () => {
+const DiaryEditor = () => {
+  //Context Props
   const { onCreate } = useContext(DiaryDispatchContext);
 
+  //useRef
   const authorInput = useRef();
   const contentInput = useRef();
 
+  //useState
   const [state, setState] = useState({
     author: "",
     content: "",
     emotion: 1,
   });
 
+  ////////////
+  //함수
+
+  //변동사항 state에 전달
   const handleChangeState = (e) => {
     console.log(e.target.name);
     console.log(e.target.value);
@@ -22,10 +29,10 @@ const DiaryEditor2 = () => {
     });
   };
 
+  //제출
   const handleSubmit = () => {
     if (!state.author.length) {
       authorInput.current.focus();
-
       return;
     }
     if (state.content.length < 5) {
@@ -33,9 +40,8 @@ const DiaryEditor2 = () => {
       return;
     }
 
+    //onCreate함수에 author, content, emotion 넣어서 실행시키기
     onCreate(state.author, state.content, state.emotion);
-    // 여기서 onCreate()함수를 실행시키고 파라미터에 state에서 해당 값을 넣어준다.
-    console.log(state);
     alert("저장성공");
 
     setState({
@@ -46,10 +52,8 @@ const DiaryEditor2 = () => {
   };
 
   return (
-    <div className="DiaryEditor2">
+    <div className="DiaryEditor">
       <h2>오늘의 일기</h2>
-
-      {/* 인풋 텍스트 */}
       <div>
         <input
           ref={authorInput}
@@ -58,8 +62,6 @@ const DiaryEditor2 = () => {
           onChange={handleChangeState}
         />
       </div>
-
-      {/* 텍스트 에이리어 */}
       <div>
         <textarea
           ref={contentInput}
@@ -68,8 +70,6 @@ const DiaryEditor2 = () => {
           onChange={handleChangeState}
         />
       </div>
-
-      {/* 점수 버튼 */}
       <div>
         <span>오늘의 감정점수 : </span>
         <select
@@ -84,8 +84,6 @@ const DiaryEditor2 = () => {
           <option value={5}>5</option>
         </select>
       </div>
-
-      {/* 저장하기 버튼 */}
       <div>
         <button onClick={handleSubmit}>일기 저장하기</button>
       </div>
@@ -93,4 +91,4 @@ const DiaryEditor2 = () => {
   );
 };
 
-export default React.memo(DiaryEditor2);
+export default React.memo(DiaryEditor);
