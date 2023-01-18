@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { DiaryDispatchContext } from "./App";
 
 const DiaryItem = ({ author, content, emotion, created_date, id }) => {
   //context
-  // const { onRemove, onEdit} = useContext(DiaryDispatchContext);
+  const { onRemove, onEdit} = useContext(DiaryDispatchContext);
 
   //useState
   //수정 여부 확인 state
@@ -38,7 +38,7 @@ const DiaryItem = ({ author, content, emotion, created_date, id }) => {
       return;
     }
     if (window.confirm(`${id}번 째 일기를 수정하시겠습니까?`)) {
-      // onEdit(id, localContent)
+      onEdit(id, localContent)
       toggleIsEdit();
     }
   };
