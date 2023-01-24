@@ -1,3 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Yeon+Sung&display=swap");
+
+body {
+  background-color: #f6f6f6;
+  display: flex;
+  /* 가로축의 센터 */
+  justify-content: center;
+  /* 세로축의 센터 */
+  align-items: center;
+  font-family: "Nanum Pen Script";
+  /* 현재 웹스크린의 100%를 최소 높이로 갖겠다. */
+  min-height: 100vh;
+  /* html body가 기본적으로 가지고 있는 margin 제거 */
+  margin: 0px;
+}
+
+/* 괄호안의 모든 css는 media에서 정해준 규칙을 충족할 때만 실행하겠다. */
+@media (min-width: 650px) {
+  .App {
+    width: 640px;
+  }
+}
+
+@media (max-width: 650px) {
+  .App {
+    width: 90vw;
+  }
+}
+
+#root {
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
 .App {
-  padding: 20px;
+  min-height: 100vh;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* MyButton */
+
+.MyButton {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+  /* 버튼 안의 글자가 짤려서 2줄이 되는 것을 방지하는 속성 */
+
+  font-family: "Nanum Pen Script";
+}
+
+.MyButton_default {
+  background-color: #ececec;
+  color: black;
+}
+
+.MyButton_positive {
+  background-color: #64c964;
+  color: white;
+}
+
+.MyButton_negative {
+  background-color: #fd565f;
+  color: white;
+}
+
+/* Header */
+
+header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  /* display flex는 기준을 가로축으로 바꿔준다. */
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+header > div {
+  display: flex;
+}
+
+header .head_text {
+  width: 50%;
+  font-size: 25px;
+  justify-content: center;
+}
+
+header .head_btn_left {
+  width: 25%;
+  justify-content: start;
+  /* 좌측 고정 */
+}
+header .head_btn_right {
+  width: 25%;
+  justify-content: end;
+  /* 우측 고정 */
+}
+
+header button {
+  font-family: "Nanum Pen Script";
 }
