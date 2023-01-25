@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DiaryItem from "./DiaryItem";
 import MyButton from "./MyButton";
 
 //정렬을 위한 변수
@@ -107,9 +108,13 @@ const DiaryList = ({ diaryList }) => {
 
       {/* 정렬된 리스트를 화면에 보여줌 */}
       {getProcessedDiaryList().map((it) => (
-        <div key={it.id}>
-          {it.content} {it.emotion}
-        </div>
+        // <div key={it.id}>
+        //   {it.content} {it.emotion}
+        // </div>
+
+        // div를 다이어리 아이템으로 대체
+
+        <DiaryItem key={it.id} {...it} />
       ))}
     </div>
   );
