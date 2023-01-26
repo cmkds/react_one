@@ -27,6 +27,7 @@ const New = () => {
       />
 
       <div>
+        {/* section 태그는 div와 똑같지만 의미를 가지는 시맨틱 태그 */}
         <section>
           <h4>오늘은 언제인가요?</h4>
           <div className="input-box">

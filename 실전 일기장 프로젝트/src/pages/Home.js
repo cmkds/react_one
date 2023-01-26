@@ -9,6 +9,7 @@ import DiaryList from "../components/DiaryList";
 
 const Home = () => {
   const diaryList = useContext(DiaryStateContext);
+  console.log(diaryList);
 
   //월별로 일기를 가공해서 관리하기 위해서 쓰는 코드
 
