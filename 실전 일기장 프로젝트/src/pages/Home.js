@@ -35,7 +35,10 @@ const Home = () => {
       const lastDay = new Date(
         curDate.getFullYear(),
         curDate.getMonth() + 1,
-        0
+        0,
+        23,
+        59,
+        59
         //월을 한달 뒤로 보낸다음에 일을 0으로 한다.
       ).getTime();
       // console.log(new Date(lastDay)); 해당월 말일이 나옴
